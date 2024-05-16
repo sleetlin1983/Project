@@ -24,10 +24,42 @@ $\small For$  $\small ongoing$  $\small sharing$  $\small project$
   Execute the following Stata code to merge the survey data with the mortality data, ensuring alignment on the unique sequence numbers:
   ```stata
   //use your own username/project repo instead of the class repo below
-  global repo "https://github.com/jhustata/intermediate/raw/main/"
+  global repo "https://github.com/sleetlin1983/Project/raw/main/"
   do ${repo}followup.do
   save followup, replace
   import sasxport5 "https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/DEMO.XPT", clear
   merge 1:1 seqn using followup
   lookfor follow
   ```
+3. **Key Parameters**
+- Here’s a first iteration of a script that answers they project main goal. Save it as [project.do](https://raw.githubusercontent.com/sleetlin1983/Project/main/Project.do) and upload it to you repo.
+```stata
+global repo "https://github.com/sleetlin1983/Project/raw/main/"
+do ${repo}followup.do
+save followup, replace 
+import sasxport5 "https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/DEMO.XPT", clear
+merge 1:1 seqn using followup
+lookfor follow
+lookfor mortstat permth_int eligstat 
+keep if eligstat==1
+capture g years=permth_int/12
+codebook mortstat
+stset years, fail(mortstat)
+sts graph, fail
+save demo_mortality, replace 
+import sasxport5 "https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/HUQ.XPT", clear 
+merge 1:1 seqn using demo_mortality, nogen
+sts graph, by(huq010) fail
+stcox i.huq010
+```
+4. **Inferences**
+Please review [documentation](https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/HUQ.htm)for the file HUQ.XPT, which includes the variable huq010
+
+   **Non-Parametric Model**
+   - Click [here](https://raw.githubusercontent.com/sleetlin1983/Project/main/Nonparametric.do) to access the code script
+   - Click [here](https://github.com/sleetlin1983/Project/blob/main/nonpara.png) for the results
+     
+   **Semi-parametric Model**
+   - Click [here](https://raw.githubusercontent.com/sleetlin1983/Project/main/Nonparametric.do) to access the code script
+   - Click [here](https://github.com/sleetlin1983/Project/blob/main/semipara_unadj.png) for the results
+   
