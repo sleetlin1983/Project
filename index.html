@@ -26,10 +26,39 @@
 <li>Code development: Download original Script from <a href="https://ftp.cdc.gov/pub/HEALTH_STATISTICS/NCHS/datalinkage/linked_mortality/Stata_ReadInProgramAllSurveys.do">here</a>. Modify the .do file and upload. Execute the following Stata code to merge the survey data with the mortality data, ensuring alignment on the unique sequence numbers:</li>
 </ul>
 <pre><code class="language-stata">//use your own username/project repo instead of the class repo below
-global repo &quot;https://github.com/jhustata/intermediate/raw/main/&quot;
+global repo &quot;https://github.com/sleetlin1983/Project/raw/main/&quot;
 do ${repo}followup.do
 save followup, replace
 import sasxport5 &quot;https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/DEMO.XPT&quot;, clear
 merge 1:1 seqn using followup
 lookfor follow
 </code></pre>
+<ol>
+<li><strong>Key Parameters</strong></li>
+</ol>
+<ul>
+<li>Here’s a first iteration of a script that answers they project main goal. Save it as <a href="https://raw.githubusercontent.com/sleetlin1983/Project/main/Project.do">project.do</a> and upload it to you repo.</li>
+</ul>
+<pre><code class="language-stata">global repo &quot;https://github.com/sleetlin1983/Project/raw/main/&quot;
+do ${repo}followup.do
+save followup, replace 
+import sasxport5 &quot;https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/DEMO.XPT&quot;, clear
+merge 1:1 seqn using followup
+lookfor follow
+lookfor mortstat permth_int eligstat 
+keep if eligstat==1
+capture g years=permth_int/12
+codebook mortstat
+stset years, fail(mortstat)
+sts graph, fail
+save demo_mortality, replace 
+import sasxport5 &quot;https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/HUQ.XPT&quot;, clear 
+merge 1:1 seqn using demo_mortality, nogen
+sts graph, by(huq010) fail
+stcox i.huq010
+</code></pre>
+<ol>
+<li><strong>Inferences</strong> Please review <a href="https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/HUQ.htm">documentation</a>for the file HUQ.XPT, which includes the variable huq010</li>
+</ol>
+<p><strong>Non-Parametric Model</strong> - Click <a href="https://raw.githubusercontent.com/sleetlin1983/Project/main/Nonparametric.do">here</a> to access the code script - Click <a href="https://github.com/sleetlin1983/Project/blob/main/nonpara.png">here</a> for the results</p>
+<p><strong>Semi-parametric Model</strong> - Click <a href="https://raw.githubusercontent.com/sleetlin1983/Project/main/Nonparametric.do">here</a> to access the code script - Click <a href="https://github.com/sleetlin1983/Project/blob/main/semipara_unadj.png">here</a> for the results</p>
