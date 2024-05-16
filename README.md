@@ -26,7 +26,7 @@ $\small For$  $\small ongoing$  $\small sharing$  $\small project$
   lookfor follow
   ```
 3. **Key Parameters**
-- Here’s a first iteration of a script that answers they project main goal. Save it as project.do and upload it to you repo.
+- Here’s a first iteration of a script that answers they project main goal. Save it as [project.do](https://raw.githubusercontent.com/sleetlin1983/Project/main/Project.do) and upload it to you repo.
 ```stata
 global repo "https://github.com/sleetlin1983/Project/raw/main/"
 do ${repo}followup.do
@@ -48,3 +48,12 @@ stcox i.huq010
 ```
 4. **Inferences**
 Please review [documentation](https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/HUQ.htm)for the file HUQ.XPT, which includes the variable huq010
+
+   **Non-Parametric Model**
+   - Click [here](https://raw.githubusercontent.com/sleetlin1983/Project/main/Nonparametric.do) to access the code script
+   - Click [here](https://github.com/sleetlin1983/Project/blob/main/nonpara.png) for the results
+     
+   **Semi-parametric Model**
+   - Click [here](https://raw.githubusercontent.com/sleetlin1983/Project/main/Nonparametric.do) to access the code script
+   - Click [here](https://github.com/sleetlin1983/Project/blob/main/semipara_unadj.png) for the results
+   
