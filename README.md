@@ -25,3 +25,26 @@ $\small For$  $\small ongoing$  $\small sharing$  $\small project$
   merge 1:1 seqn using followup
   lookfor follow
   ```
+3. **Key Parameters**
+- Here’s a first iteration of a script that answers they project main goal. Save it as project.do and upload it to you repo.
+```stata
+global repo "https://github.com/sleetlin1983/Project/raw/main/"
+do ${repo}followup.do
+save followup, replace 
+import sasxport5 "https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/DEMO.XPT", clear
+merge 1:1 seqn using followup
+lookfor follow
+lookfor mortstat permth_int eligstat 
+keep if eligstat==1
+capture g years=permth_int/12
+codebook mortstat
+stset years, fail(mortstat)
+sts graph, fail
+save demo_mortality, replace 
+import sasxport5 "https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/HUQ.XPT", clear 
+merge 1:1 seqn using demo_mortality, nogen
+sts graph, by(huq010) fail
+stcox i.huq010
+```
+4. **Inferences**
+Please review [documentation](https://wwwn.cdc.gov/Nchs/Nhanes/1999-2000/HUQ.htm)for the file HUQ.XPT, which includes the variable huq010
